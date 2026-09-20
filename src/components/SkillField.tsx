@@ -43,6 +43,8 @@ export function SkillField() {
     [selected],
   )
 
+  selectedRef.current = selected
+
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key === 'Escape') setSelected(null)
