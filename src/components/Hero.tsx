@@ -25,7 +25,7 @@ export function Hero() {
             </a>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <a href="#work">What it can host</a>
+            <a href="#domain">Use anoopmakam.com</a>
           </Button>
         </div>
       </div>

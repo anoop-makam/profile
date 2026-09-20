@@ -7,6 +7,7 @@ const links = [
   { href: '#work', label: 'What it hosts' },
   { href: '#notes', label: 'Notes' },
   { href: '#deploy', label: 'Deploy' },
+  { href: '#domain', label: 'Domain' },
 ]
 
 export function SiteHeader() {

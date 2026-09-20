@@ -74,8 +74,14 @@ export const notes: Note[] = [
   {
     id: 'domain',
     topic: 'urls',
-    title: 'Custom domains are first-class',
-    body: 'Point a DNS record at GitHub, then add the domain in Pages settings. HTTPS certificates are issued automatically.',
+    title: 'Point DNS at Pages. Skip the proxy.',
+    body: 'GitHub Pages can serve anoopmakam.com itself. Add the domain in Settings → Pages, then create A records to GitHub’s IPs. A reverse proxy or Cloudflare orange-cloud in front often blocks the free HTTPS certificate.',
+  },
+  {
+    id: 'dotcom',
+    topic: 'limits',
+    title: 'The .com is the only paid piece',
+    body: 'Hosting and TLS are free on a public repo. A real .com is not: registrars charge about $10 a year. “Free .com” offers are usually a subdomain, a trial, or a scam.',
   },
   {
     id: 'jekyll',
@@ -119,3 +125,21 @@ export const launchSteps = [
 ] as const
 
 export type StepId = (typeof launchSteps)[number]['id']
+
+export const customDomain = {
+  apex: 'anoopmakam.com',
+  www: 'www.anoopmakam.com',
+  aRecords: [
+    '185.199.108.153',
+    '185.199.109.153',
+    '185.199.110.153',
+    '185.199.111.153',
+  ],
+  aaaaRecords: [
+    '2606:50c0:8000::153',
+    '2606:50c0:8001::153',
+    '2606:50c0:8002::153',
+    '2606:50c0:8003::153',
+  ],
+  wwwCname: 'USERNAME.github.io',
+}

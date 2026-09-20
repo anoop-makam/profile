@@ -31,6 +31,41 @@ The workflow file is `.github/workflows/pages.yml`. Asset URLs in the build are 
 
 Pages hosts static files only. It will not run an API, a database, or a Node process. Public repositories can use Pages on a free plan; private repositories need GitHub Pro, Team, or Enterprise.
 
+## Custom domain (`anoopmakam.com`)
+
+You cannot get a real `.com` for free. Hosting this site and HTTPS on GitHub Pages are free. The name itself is a registrar fee, usually about $10 a year (Cloudflare Registrar sells at cost; Porkbun is often cheap too). Ignore “free .com” sites — those are a subdomain, a trial, or a scam.
+
+Do not put a reverse proxy in front of this site. GitHub Pages already serves custom domains. A proxy (or Cloudflare’s orange-cloud proxy) often blocks GitHub from issuing the Let’s Encrypt certificate.
+
+After the GitHub repo exists and Pages is deploying:
+
+1. Buy `anoopmakam.com` at a registrar. Use that registrar’s DNS (or Cloudflare DNS in **DNS only** mode — grey cloud, not proxied).
+2. In the repo: **Settings → Pages → Custom domain** → `anoopmakam.com` → Save. Do this *before* changing DNS so someone else cannot claim the domain on Pages.
+3. At the DNS host, remove leftover `@` / `www` A or CNAME records, then add:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+| CNAME | `www` | `USERNAME.github.io` |
+
+Replace `USERNAME` with your GitHub username. The CNAME target is the user/org site (`username.github.io`), not the project URL with the repo name.
+
+4. Wait for DNS, then tick **Enforce HTTPS** in Pages settings. This repo publishes with Actions, so a `CNAME` file in the repo is ignored — the custom domain lives in the GitHub UI.
+
+```bash
+dig anoopmakam.com +noall +answer -t A
+dig www.anoopmakam.com +noall +answer
+```
+
+The apex should resolve to those four GitHub IPs. `www` should CNAME to `USERNAME.github.io`.
+
 ## Project layout
 
 - `src/` — the site

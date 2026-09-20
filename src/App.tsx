@@ -1,4 +1,5 @@
 import { Capabilities } from '@/components/Capabilities'
+import { DomainGuide } from '@/components/DomainGuide'
 import { Hero } from '@/components/Hero'
 import { LaunchChecklist } from '@/components/LaunchChecklist'
 import { Notes } from '@/components/Notes'
@@ -14,6 +15,7 @@ export default function App() {
         <Capabilities />
         <Notes />
         <LaunchChecklist />
+        <DomainGuide />
       </main>
       <SiteFooter />
     </div>
