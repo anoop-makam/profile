@@ -1,23 +1,20 @@
-import { Capabilities } from '@/components/Capabilities'
-import { DomainGuide } from '@/components/DomainGuide'
-import { Hero } from '@/components/Hero'
-import { LaunchChecklist } from '@/components/LaunchChecklist'
-import { Notes } from '@/components/Notes'
-import { SiteFooter } from '@/components/SiteFooter'
+import { ContactSection } from '@/components/ContactSection'
+import { PathSection } from '@/components/PathSection'
 import { SiteHeader } from '@/components/SiteHeader'
+import { SkillField } from '@/components/SkillField'
+import { WorkSection } from '@/components/WorkSection'
 
 export default function App() {
   return (
-    <div id="top" className="min-h-svh">
+    <div className="relative">
+      <div className="grain" aria-hidden="true" />
       <SiteHeader />
-      <main id="main">
-        <Hero />
-        <Capabilities />
-        <Notes />
-        <LaunchChecklist />
-        <DomainGuide />
+      <main>
+        <SkillField />
+        <WorkSection />
+        <PathSection />
+        <ContactSection />
       </main>
-      <SiteFooter />
     </div>
   )
 }
