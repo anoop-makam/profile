@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { cn } from 'cn'
 import { categories, skills, type CategoryId } from '@/data/portfolio'
-import { layoutBodies, stepBodies, type Body } from '@/lib/skill-physics'
+import { labelLines, layoutBodies, stepBodies, type Body } from '@/lib/skill-physics'
 import { Button } from '@/components/ui/button'
 
 const categoryColor: Record<CategoryId, string> = {
@@ -77,7 +77,11 @@ export function SkillField() {
       if (width < 40 || height < 40) return
       const previous = new Map(bodiesRef.current.map((body) => [body.id, body]))
       const next = layoutBodies(
-        skills.map((skill) => ({ id: skill.id, weight: skill.weight })),
+        skills.map((skill) => ({
+          id: skill.id,
+          weight: skill.weight,
+          label: skill.label,
+        })),
         width,
         height,
       )
@@ -325,7 +329,7 @@ export function SkillField() {
               aria-pressed={selected === skill.id}
               aria-label={`${skill.label}, ${skill.when}`}
               className={cn(
-                'absolute top-0 left-0 flex cursor-grab items-center justify-center rounded-full border px-0.5 text-center text-[8px] leading-[1.05] font-semibold tracking-tight text-[#07080d] select-none will-change-transform active:cursor-grabbing sm:text-[10px]',
+                'absolute top-0 left-0 flex cursor-grab items-center justify-center overflow-hidden rounded-full border text-center font-semibold tracking-tight text-[#07080d] select-none will-change-transform active:cursor-grabbing',
                 'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]',
                 !ready && 'invisible',
               )}
@@ -333,6 +337,8 @@ export function SkillField() {
                 background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), transparent 42%), ${categoryColor[skill.category]}`,
                 boxShadow: `0 0 22px ${categoryColor[skill.category]}55`,
                 borderColor: 'rgba(255,255,255,0.28)',
+                fontSize: 'clamp(8px, 2.1vw, 11px)',
+                lineHeight: 1.15,
               }}
               onPointerDown={() => {
                 dragRef.current = { id: skill.id, moved: false }
@@ -346,7 +352,13 @@ export function SkillField() {
                 setSelected((current) => (current === skill.id ? null : skill.id))
               }}
             >
-              {skill.label}
+              <span className="flex w-[72%] flex-col items-center justify-center px-0.5 leading-[1.12]">
+                {labelLines(skill.label).map((line) => (
+                  <span key={line} className="block w-full">
+                    {line}
+                  </span>
+                ))}
+              </span>
             </button>
           ))}
         </div>
