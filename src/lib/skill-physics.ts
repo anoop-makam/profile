@@ -25,9 +25,9 @@ export function layoutBodies(
 ): Body[] {
   const cx = width * 0.52
   const cy = height * 0.5
-  const maxR = Math.min(width, height) * 0.38
+  const maxR = Math.min(width, height) * 0.46
   const minDim = Math.min(width, height)
-  const base = Math.max(36, Math.min(58, minDim * 0.085))
+  const base = Math.max(16, Math.min(26, minDim * 0.034))
 
   return items.map((item, index) => {
     const t = (index + 0.4) / items.length
@@ -70,7 +70,7 @@ export function stepBodies(
       const dx = a.x - mouse.x
       const dy = a.y - mouse.y
       const distSq = dx * dx + dy * dy + 40
-      const force = 2200 / distSq
+      const force = 1400 / distSq
       a.vx += (dx / Math.sqrt(distSq)) * force
       a.vy += (dy / Math.sqrt(distSq)) * force
     }
@@ -79,7 +79,7 @@ export function stepBodies(
       const b = bodies[j]
       const dx = b.x - a.x
       const dy = b.y - a.y
-      const min = a.r + b.r + 14
+      const min = a.r + b.r + 6
       const dist = Math.hypot(dx, dy) || 0.001
       if (dist < min) {
         const overlap = (min - dist) / dist

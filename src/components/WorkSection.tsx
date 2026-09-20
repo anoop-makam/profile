@@ -10,7 +10,7 @@ export function WorkSection() {
         Selected work
       </p>
       <h2 className="mt-3 max-w-xl text-4xl tracking-tight sm:text-5xl">
-        Three chapters. One through-line: it has to run.
+        GM by day. Hawaiian before that.
       </h2>
       <ol className="mt-12 divide-y divide-white/10 border-y border-white/10">
         {projects.map((project) => (

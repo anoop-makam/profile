@@ -10,7 +10,7 @@ export function PathSection() {
         Path
       </p>
       <h2 className="mt-3 max-w-lg text-4xl tracking-tight sm:text-5xl">
-        ASU, a radio stack, then GM.
+        ASU, Hawaiian, GM, then UT Austin.
       </h2>
       <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {path.map((stop, index) => (

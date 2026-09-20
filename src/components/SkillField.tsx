@@ -1,17 +1,24 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { cn } from 'cn'
-import { eras, skills, type EraId } from '@/data/portfolio'
+import { categories, skills, type CategoryId } from '@/data/portfolio'
 import { layoutBodies, stepBodies, type Body } from '@/lib/skill-physics'
 import { Button } from '@/components/ui/button'
 
-const eraColor: Record<EraId, string> = {
-  asu: '#7dd3fc',
-  gdms: '#fbbf24',
-  gm: '#c8f542',
-  now: '#e879f9',
+const categoryColor: Record<CategoryId, string> = {
+  cloud: '#7dd3fc',
+  lang: '#c8f542',
+  arch: '#fbbf24',
+  data: '#34d399',
+  devops: '#fb923c',
+  obs: '#e879f9',
+  frontend: '#a78bfa',
+  tools: '#67e8f9',
+  method: '#fda4af',
 }
 
-type Filter = 'all' | EraId
+const LINE_CAP = 56
+
+type Filter = 'all' | CategoryId
 
 export function SkillField() {
   const fieldRef = useRef<HTMLDivElement>(null)
@@ -43,7 +50,7 @@ export function SkillField() {
     filterRef.current = filter
     for (const body of bodiesRef.current) {
       const skill = skills.find((item) => item.id === body.id)
-      body.dim = filter !== 'all' && skill?.era !== filter
+      body.dim = filter !== 'all' && skill?.category !== filter
     }
   }, [filter])
 
@@ -83,7 +90,7 @@ export function SkillField() {
           y: old?.y ?? body.y,
           vx: old?.vx ?? 0,
           vy: old?.vy ?? 0,
-          dim: filterRef.current !== 'all' && skill?.era !== filterRef.current,
+          dim: filterRef.current !== 'all' && skill?.category !== filterRef.current,
         }
       })
       paint()
@@ -107,27 +114,34 @@ export function SkillField() {
       if (!svg) return
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
       const lines = svg.querySelectorAll('line')
-      let lineIndex = 0
+      const nearby: { x1: number; y1: number; x2: number; y2: number; dist: number }[] =
+        []
       const bodies = bodiesRef.current
+      const max = 92
       for (let i = 0; i < bodies.length; i += 1) {
         for (let j = i + 1; j < bodies.length; j += 1) {
           const a = bodies[i]
           const b = bodies[j]
+          if (a.dim || b.dim) continue
           const dist = Math.hypot(a.x - b.x, a.y - b.y)
-          const max = 150
-          const line = lines[lineIndex]
-          lineIndex += 1
-          if (!line) continue
-          if (dist > max || a.dim || b.dim) {
-            line.setAttribute('opacity', '0')
-            continue
+          if (dist < max) {
+            nearby.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, dist })
           }
-          line.setAttribute('x1', String(a.x))
-          line.setAttribute('y1', String(a.y))
-          line.setAttribute('x2', String(b.x))
-          line.setAttribute('y2', String(b.y))
-          line.setAttribute('opacity', String((1 - dist / max) * 0.35))
         }
+      }
+      nearby.sort((left, right) => left.dist - right.dist)
+      for (let index = 0; index < lines.length; index += 1) {
+        const line = lines[index]
+        const pair = nearby[index]
+        if (!pair) {
+          line.setAttribute('opacity', '0')
+          continue
+        }
+        line.setAttribute('x1', String(pair.x1))
+        line.setAttribute('y1', String(pair.y1))
+        line.setAttribute('x2', String(pair.x2))
+        line.setAttribute('y2', String(pair.y2))
+        line.setAttribute('opacity', String((1 - pair.dist / max) * 0.32))
       }
     }
 
@@ -192,7 +206,7 @@ export function SkillField() {
     }
   }, [])
 
-  const pairCount = (skills.length * (skills.length - 1)) / 2
+  const pairCount = LINE_CAP
 
   return (
     <section
@@ -209,13 +223,13 @@ export function SkillField() {
               Anoop
             </h1>
             <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:block sm:text-base">
-              Software engineer at General Motors in Austin. Drag the field.
-              Click a skill to pin where it showed up.
+              Software engineer at General Motors in Austin. MS in AI at UT Austin.
+              Every orb is from the résumé — drag or click one.
             </p>
             <div
               className="mt-4 flex flex-wrap gap-2 sm:mt-6"
               role="group"
-              aria-label="Filter skills by era"
+              aria-label="Filter skills by category"
             >
               <FilterChip
                 active={filter === 'all'}
@@ -223,14 +237,14 @@ export function SkillField() {
               >
                 All
               </FilterChip>
-              {eras.map((era) => (
+              {categories.map((category) => (
                 <FilterChip
-                  key={era.id}
-                  active={filter === era.id}
-                  color={eraColor[era.id]}
-                  onClick={() => setFilter(era.id)}
+                  key={category.id}
+                  active={filter === category.id}
+                  color={categoryColor[category.id]}
+                  onClick={() => setFilter(category.id)}
                 >
-                  {era.label}
+                  {category.label}
                 </FilterChip>
               ))}
             </div>
@@ -271,7 +285,7 @@ export function SkillField() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {reduceMotion
                     ? 'Motion is off. Tap a skill to read where it landed in the work.'
-                    : 'Nothing pinned. Drag an orb. Click to lock it. Filter by ASU, GDMS, GM, or this site.'}
+                    : 'Nothing pinned. Drag an orb. Filter by the résumé categories.'}
                 </p>
               </div>
             )}
@@ -311,13 +325,13 @@ export function SkillField() {
               aria-pressed={selected === skill.id}
               aria-label={`${skill.label}, ${skill.when}`}
               className={cn(
-                'absolute top-0 left-0 flex cursor-grab items-center justify-center rounded-full border px-1 text-center text-[10px] leading-[1.05] font-semibold tracking-tight text-[#07080d] select-none will-change-transform active:cursor-grabbing sm:text-xs',
+                'absolute top-0 left-0 flex cursor-grab items-center justify-center rounded-full border px-0.5 text-center text-[8px] leading-[1.05] font-semibold tracking-tight text-[#07080d] select-none will-change-transform active:cursor-grabbing sm:text-[10px]',
                 'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]',
                 !ready && 'invisible',
               )}
               style={{
-                background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), transparent 42%), ${eraColor[skill.era]}`,
-                boxShadow: `0 0 32px ${eraColor[skill.era]}55`,
+                background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), transparent 42%), ${categoryColor[skill.category]}`,
+                boxShadow: `0 0 22px ${categoryColor[skill.category]}55`,
                 borderColor: 'rgba(255,255,255,0.28)',
               }}
               onPointerDown={() => {
@@ -364,7 +378,7 @@ function FilterChip({
       variant={active ? 'default' : 'outline'}
       onClick={onClick}
       aria-pressed={active}
-      className="rounded-full border-white/15"
+      className="h-7 rounded-full border-white/15 px-2.5 text-[11px] sm:h-8"
       style={
         active && color
           ? { background: color, color: '#07080d', borderColor: color }

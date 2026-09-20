@@ -3,7 +3,6 @@ import { profile } from '@/data/portfolio'
 import { Button } from '@/components/ui/button'
 
 const links = [
-  { href: profile.github, label: 'GitHub' },
   { href: profile.linkedin, label: 'LinkedIn' },
   { href: `mailto:${profile.email}`, label: 'Email' },
 ]
@@ -22,8 +21,8 @@ export function ContactSection() {
           Say hello.
         </h2>
         <p className="mt-6 max-w-md text-muted-foreground">
-          Austin. Building at GM. If you want to talk systems, product, or this
-          site, use any of the doors below.
+          Austin. Software engineer at GM. MS in AI at UT Austin. LinkedIn or
+          email.
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
           {links.map((link) => (
