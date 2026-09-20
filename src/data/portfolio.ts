@@ -164,7 +164,7 @@ export const skills: Skill[] = [
     category: 'lang',
     weight: 0.85,
     when: 'Languages',
-    blurb: 'Java as a listed language — not the daily GM stack, still in the set.',
+    blurb: 'Java in the language set — used alongside C# and TypeScript, not the daily GM runtime.',
   },
   {
     id: 'sql',
@@ -378,7 +378,7 @@ export const skills: Skill[] = [
     category: 'frontend',
     weight: 0.8,
     when: 'Frontend',
-    blurb: 'HTML as the document under the Angular views.',
+    blurb: 'HTML for the markup under Angular views on GM customer and dealer apps.',
   },
   {
     id: 'css',
@@ -386,7 +386,7 @@ export const skills: Skill[] = [
     category: 'frontend',
     weight: 0.8,
     when: 'Frontend',
-    blurb: 'CSS for layout and the parts Angular is not already styling.',
+    blurb: 'CSS for layout and styling on those Angular surfaces.',
   },
   {
     id: 'aem',
@@ -458,7 +458,7 @@ export const skills: Skill[] = [
     category: 'tools',
     weight: 0.9,
     when: 'Always',
-    blurb: 'Git for the history that actually ships.',
+    blurb: 'Git for source history on GM and Hawaiian work — every change that shipped.',
   },
   {
     id: 'dbeaver',
@@ -474,7 +474,7 @@ export const skills: Skill[] = [
     category: 'tools',
     weight: 0.85,
     when: 'GM',
-    blurb: 'Jira for the work, because that is how the team tracks it.',
+    blurb: 'Jira to track GM work: stories, incidents, and the on-call follow-up.',
   },
   {
     id: 'playwright',

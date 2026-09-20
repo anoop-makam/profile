@@ -28,6 +28,7 @@ export function SkillField() {
   const mouseRef = useRef({ x: 0, y: 0, inside: false })
   const dragRef = useRef<{ id: string; moved: boolean } | null>(null)
   const ignoreClickRef = useRef(false)
+  const tipRef = useRef<HTMLElement | null>(null)
   const selectedRef = useRef<string | null>(null)
   const filterRef = useRef<Filter>('all')
   const reduceRef = useRef(false)
@@ -43,8 +44,12 @@ export function SkillField() {
   )
 
   useEffect(() => {
-    selectedRef.current = selected
-  }, [selected])
+    function onKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') setSelected(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   useEffect(() => {
     filterRef.current = filter
@@ -107,16 +112,41 @@ export function SkillField() {
       for (const body of bodiesRef.current) {
         const node = nodeRefs.current[body.id]
         if (!node) continue
-        const scale = selectedRef.current === body.id ? 1.08 : 1
+        const isSelected = selectedRef.current === body.id
+        const scale = isSelected ? 1.08 : 1
         node.style.transform = `translate3d(${body.x - body.r}px, ${body.y - body.r}px, 0) scale(${scale})`
         node.style.width = `${body.r * 2}px`
         node.style.height = `${body.r * 2}px`
-        node.style.opacity = body.dim ? '0.28' : '1'
-        node.style.zIndex = selectedRef.current === body.id ? '5' : '1'
+        node.style.opacity =
+          body.dim || (selectedRef.current && !isSelected) ? '0.32' : '1'
+        node.style.zIndex = isSelected ? '8' : '1'
         const skill = skills.find((item) => item.id === body.id)
         if (skill) {
           node.style.fontSize = `${fontSizeFor(body.r, labelLines(skill.label))}px`
         }
+      }
+      const tip = tipRef.current
+      const selectedBody = bodiesRef.current.find(
+        (body) => body.id === selectedRef.current,
+      )
+      if (tip && selectedBody) {
+        const cardW = tip.offsetWidth
+        const cardH = tip.offsetHeight
+        let left = selectedBody.x + selectedBody.r + 12
+        let top = selectedBody.y - cardH / 2
+        if (left + cardW > width - 8) {
+          left = selectedBody.x - selectedBody.r - 12 - cardW
+        }
+        if (left < 8) left = 8
+        if (left + cardW > width - 8) left = Math.max(8, width - cardW - 8)
+        if (top < 8) top = 8
+        if (top + cardH > height - 8) top = Math.max(8, height - cardH - 8)
+        if (width < 520) {
+          left = 8
+          top = Math.max(8, height - cardH - 8)
+        }
+        tip.style.transform = `translate3d(${left}px, ${top}px, 0)`
+        tip.style.opacity = '1'
       }
       const svg = svgRef.current
       if (!svg) return
@@ -189,7 +219,7 @@ export function SkillField() {
       if (!body) return
       const dx = x - body.x
       const dy = y - body.y
-      if (Math.hypot(dx, dy) > 3) drag.moved = true
+      if (Math.hypot(dx, dy) > 10) drag.moved = true
       body.x = Math.min(Math.max(x, body.r), bounds.width - body.r)
       body.y = Math.min(Math.max(y, body.r), bounds.height - body.r)
       body.vx = dx * 0.35
@@ -232,7 +262,7 @@ export function SkillField() {
             </h1>
             <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:block sm:text-base">
               Software engineer at General Motors in Austin. MS in AI at UT Austin.
-              Every orb is from the résumé — drag or click one.
+              Click an orb for what I used it for.
             </p>
             <div
               className="mt-4 flex flex-wrap gap-2 sm:mt-6"
@@ -258,46 +288,11 @@ export function SkillField() {
             </div>
           </div>
 
-          <div
-            className={cn(
-              'rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md',
-              selectedSkill ? 'block' : 'hidden lg:block',
-              selectedSkill ? 'min-h-0' : 'lg:min-h-[8.5rem]',
-            )}
-          >
-            {selectedSkill ? (
-              <div>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-                    {selectedSkill.when}
-                  </p>
-                  <Button
-                    type="button"
-                    size="xs"
-                    variant="ghost"
-                    onClick={() => setSelected(null)}
-                  >
-                    Clear
-                  </Button>
-                </div>
-                <h2 className="mt-1 text-2xl tracking-tight">{selectedSkill.label}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {selectedSkill.blurb}
-                </p>
-              </div>
-            ) : (
-              <div>
-                <p className="font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-                  Career field
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {reduceMotion
-                    ? 'Motion is off. Tap a skill to read where it landed in the work.'
-                    : 'Nothing pinned. Drag an orb. Filter by the résumé categories.'}
-                </p>
-              </div>
-            )}
-          </div>
+          <p className="hidden text-sm text-muted-foreground lg:block">
+            {reduceMotion
+              ? 'Tap a skill for a short note on how it showed up in the work.'
+              : 'Click a bubble. A note pins next to it — what it was for at GM or Hawaiian.'}
+          </p>
         </div>
 
         <div
@@ -331,9 +326,9 @@ export function SkillField() {
               }}
               type="button"
               aria-pressed={selected === skill.id}
-              aria-label={`${skill.label}, ${skill.when}`}
+              aria-label={`${skill.label}. ${skill.blurb}`}
               className={cn(
-                'absolute top-0 left-0 box-border flex cursor-grab items-center justify-center overflow-hidden rounded-full border font-mono font-medium tracking-normal text-[#07080d] select-none will-change-transform active:cursor-grabbing',
+                'absolute top-0 left-0 box-border flex cursor-pointer items-center justify-center overflow-hidden rounded-full border font-mono font-medium tracking-normal text-[#07080d] select-none will-change-transform active:cursor-grabbing',
                 'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]',
                 !ready && 'invisible',
               )}
@@ -364,6 +359,42 @@ export function SkillField() {
               </span>
             </button>
           ))}
+          {selectedSkill ? (
+            <aside
+              ref={tipRef}
+              role="dialog"
+              aria-label={`${selectedSkill.label} — what I used it for`}
+              className="absolute top-0 left-0 z-30 w-[min(18rem,calc(100%-1rem))] rounded-xl border border-white/15 bg-[#101218]/95 p-3 text-left shadow-xl backdrop-blur-md"
+              style={{ opacity: 0 }}
+              onPointerDown={(event) => {
+                event.stopPropagation()
+                dragRef.current = null
+              }}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="font-mono text-[10px] tracking-wide text-primary uppercase">
+                    {selectedSkill.when}
+                  </p>
+                  <h2 className="mt-0.5 text-lg leading-tight tracking-tight">
+                    {selectedSkill.label}
+                  </h2>
+                </div>
+                <Button
+                  type="button"
+                  size="xs"
+                  variant="ghost"
+                  className="shrink-0 text-muted-foreground"
+                  onClick={() => setSelected(null)}
+                >
+                  Close
+                </Button>
+              </div>
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                {selectedSkill.blurb}
+              </p>
+            </aside>
+          ) : null}
         </div>
       </div>
       <p className="mt-4 hidden text-center font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase sm:mt-6 sm:block">
