@@ -24,18 +24,34 @@ export function labelLines(label: string): string[] {
     .replaceAll(/([a-z])([A-Z])/gu, '$1 $2')
     .replaceAll(/([A-Za-z])(\d)/gu, '$1 $2')
   if (camel !== label) return camel.split(' ')
+  if (label.toLowerCase().endsWith('services') && label.length > 8) {
+    return [label.slice(0, -8), 'services']
+  }
   return [label]
 }
 
-function radiusForLabel(label: string, weight: number, base: number): number {
+export function fontSizeFor(r: number, lines: string[]): number {
+  const longest = Math.max(...lines.map((line) => line.length), 1)
+  const usable = r * 2 * 0.62
+  const byWidth = usable / (longest * 0.64)
+  const byHeight = usable / (lines.length * 1.25)
+  return Math.max(6.5, Math.min(11, byWidth, byHeight))
+}
+
+function radiusForLabel(
+  label: string,
+  weight: number,
+  base: number,
+  cap: number,
+): number {
   const lines = labelLines(label)
   const longest = Math.max(...lines.map((line) => line.length), 1)
-  const char = Math.max(6.2, base * 0.34)
-  const textW = longest * char
-  const textH = lines.length * char * 1.45
+  const font = 9.5
+  const textW = longest * font * 0.7
+  const textH = lines.length * font * 1.28
   const inner = Math.max(textW, textH)
-  const fromText = inner / 1.28 + 10
-  return Math.max(base * 0.9 * weight, fromText / 2)
+  const rFit = inner / 1.18 + 4
+  return Math.min(cap, Math.max(base * 0.55 * weight + 16, rFit))
 }
 
 export function layoutBodies(
@@ -47,7 +63,8 @@ export function layoutBodies(
   const cy = height * 0.5
   const maxR = Math.min(width, height) * 0.47
   const minDim = Math.min(width, height)
-  const base = Math.max(18, Math.min(28, minDim * 0.036))
+  const base = Math.max(16, Math.min(24, minDim * 0.032))
+  const cap = Math.max(28, Math.min(40, minDim * 0.078))
 
   return items.map((item, index) => {
     const t = (index + 0.4) / items.length
@@ -55,7 +72,7 @@ export function layoutBodies(
     const angle = index * GOLDEN
     const restX = cx + Math.cos(angle) * radius
     const restY = cy + Math.sin(angle) * radius * 0.86
-    const r = radiusForLabel(item.label, item.weight, base)
+    const r = radiusForLabel(item.label, item.weight, base, cap)
     return {
       id: item.id,
       x: restX,

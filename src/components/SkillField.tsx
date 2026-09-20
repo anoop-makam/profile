@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { cn } from 'cn'
 import { categories, skills, type CategoryId } from '@/data/portfolio'
-import { labelLines, layoutBodies, stepBodies, type Body } from '@/lib/skill-physics'
+import { fontSizeFor, labelLines, layoutBodies, stepBodies, type Body } from '@/lib/skill-physics'
 import { Button } from '@/components/ui/button'
 
 const categoryColor: Record<CategoryId, string> = {
@@ -107,12 +107,16 @@ export function SkillField() {
       for (const body of bodiesRef.current) {
         const node = nodeRefs.current[body.id]
         if (!node) continue
-        const scale = body.dim ? 0.72 : selectedRef.current === body.id ? 1.12 : 1
+        const scale = selectedRef.current === body.id ? 1.08 : 1
         node.style.transform = `translate3d(${body.x - body.r}px, ${body.y - body.r}px, 0) scale(${scale})`
         node.style.width = `${body.r * 2}px`
         node.style.height = `${body.r * 2}px`
         node.style.opacity = body.dim ? '0.28' : '1'
         node.style.zIndex = selectedRef.current === body.id ? '5' : '1'
+        const skill = skills.find((item) => item.id === body.id)
+        if (skill) {
+          node.style.fontSize = `${fontSizeFor(body.r, labelLines(skill.label))}px`
+        }
       }
       const svg = svgRef.current
       if (!svg) return
@@ -329,7 +333,7 @@ export function SkillField() {
               aria-pressed={selected === skill.id}
               aria-label={`${skill.label}, ${skill.when}`}
               className={cn(
-                'absolute top-0 left-0 flex cursor-grab items-center justify-center overflow-hidden rounded-full border text-center font-semibold tracking-tight text-[#07080d] select-none will-change-transform active:cursor-grabbing',
+                'absolute top-0 left-0 box-border flex cursor-grab items-center justify-center overflow-hidden rounded-full border font-mono font-medium tracking-normal text-[#07080d] select-none will-change-transform active:cursor-grabbing',
                 'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]',
                 !ready && 'invisible',
               )}
@@ -337,8 +341,7 @@ export function SkillField() {
                 background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), transparent 42%), ${categoryColor[skill.category]}`,
                 boxShadow: `0 0 22px ${categoryColor[skill.category]}55`,
                 borderColor: 'rgba(255,255,255,0.28)',
-                fontSize: 'clamp(8px, 2.1vw, 11px)',
-                lineHeight: 1.15,
+                lineHeight: 1.1,
               }}
               onPointerDown={() => {
                 dragRef.current = { id: skill.id, moved: false }
@@ -352,9 +355,9 @@ export function SkillField() {
                 setSelected((current) => (current === skill.id ? null : skill.id))
               }}
             >
-              <span className="flex w-[72%] flex-col items-center justify-center px-0.5 leading-[1.12]">
+              <span className="flex w-[64%] flex-col items-center justify-center text-center leading-[1.12]">
                 {labelLines(skill.label).map((line) => (
-                  <span key={line} className="block w-full">
+                  <span key={line} className="block max-w-full whitespace-nowrap">
                     {line}
                   </span>
                 ))}
