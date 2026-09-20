@@ -32,17 +32,17 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-white/5 bg-[#05060a]/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-3 sm:px-6 sm:py-4 lg:px-10">
         <a href="#skills" className="font-mono text-xs tracking-[0.18em] uppercase">
           AM
         </a>
-        <nav className="flex items-center gap-1 sm:gap-2" aria-label="Sections">
+        <nav className="flex items-center gap-0.5 sm:gap-2" aria-label="Sections">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-full px-2.5 py-1 font-mono text-[11px] tracking-wide uppercase transition-colors sm:px-3',
+                'rounded-full px-2 py-1 font-mono text-[10px] tracking-wide uppercase transition-colors sm:px-3 sm:text-[11px]',
                 active === link.href.slice(1)
                   ? 'bg-white text-black'
                   : 'text-white/70 hover:text-white',

@@ -197,23 +197,23 @@ export function SkillField() {
   return (
     <section
       id="skills"
-      className="snap-section relative flex flex-col overflow-hidden px-4 pb-8 pt-24 sm:px-6 lg:px-10"
+      className="snap-section relative flex flex-col overflow-hidden px-4 pb-5 pt-20 sm:px-6 sm:pb-8 sm:pt-24 lg:px-10"
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 lg:grid lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.4fr)] lg:gap-10">
-        <div className="relative z-10 flex max-w-md flex-col justify-between gap-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 lg:grid lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.4fr)] lg:gap-10">
+        <div className="relative z-10 flex max-w-md flex-col justify-between gap-4 lg:gap-8">
           <div>
             <p className="font-mono text-[11px] tracking-[0.22em] text-primary uppercase">
               {profileKicker}
             </p>
-            <h1 className="mt-3 text-[clamp(3.4rem,12vw,7.5rem)] leading-[0.82] tracking-[-0.07em]">
+            <h1 className="mt-2 text-[clamp(3rem,12vw,7.5rem)] leading-[0.82] tracking-[-0.07em] sm:mt-3">
               Anoop
             </h1>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:block sm:text-base">
               Software engineer at General Motors in Austin. Drag the field.
               Click a skill to pin where it showed up.
             </p>
             <div
-              className="mt-6 flex flex-wrap gap-2"
+              className="mt-4 flex flex-wrap gap-2 sm:mt-6"
               role="group"
               aria-label="Filter skills by era"
             >
@@ -236,7 +236,13 @@ export function SkillField() {
             </div>
           </div>
 
-          <div className="min-h-[8.5rem] rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md">
+          <div
+            className={cn(
+              'rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md',
+              selectedSkill ? 'block' : 'hidden lg:block',
+              selectedSkill ? 'min-h-0' : 'lg:min-h-[8.5rem]',
+            )}
+          >
             {selectedSkill ? (
               <div>
                 <div className="flex items-center justify-between gap-3">
@@ -274,7 +280,7 @@ export function SkillField() {
 
         <div
           ref={fieldRef}
-          className="relative min-h-[28rem] flex-1 touch-none overflow-hidden rounded-[2rem] border border-white/10 bg-[#07080d]/70 sm:min-h-[34rem] lg:min-h-[calc(100svh-8rem)]"
+          className="relative min-h-[48vh] flex-1 touch-none overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07080d]/70 sm:min-h-[34rem] sm:rounded-[2rem] lg:min-h-[calc(100svh-8rem)]"
         >
           {!ready ? (
             <p className="absolute inset-0 flex items-center justify-center font-mono text-xs text-muted-foreground">
@@ -331,7 +337,7 @@ export function SkillField() {
           ))}
         </div>
       </div>
-      <p className="mt-6 text-center font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
+      <p className="mt-4 hidden text-center font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase sm:mt-6 sm:block">
         Scroll for work
       </p>
     </section>
