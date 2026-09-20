@@ -5,7 +5,7 @@ const links = [
   { href: '#skills', label: 'Skills' },
   { href: '#work', label: 'Work' },
   { href: '#path', label: 'Path' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#contact', label: 'Signal' },
 ]
 
 export function SiteHeader() {
@@ -31,27 +31,33 @@ export function SiteHeader() {
   }, [])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-white/5 bg-[#05060a]/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-3 sm:px-6 sm:py-4 lg:px-10">
-        <a href="#skills" className="font-mono text-xs tracking-[0.18em] uppercase">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-primary/15 bg-[#060807]/80 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-2.5 sm:px-6 sm:py-3 lg:px-10">
+        <a
+          href="#skills"
+          className="font-mono text-[11px] tracking-[0.32em] text-primary/80 uppercase"
+        >
           AM
         </a>
-        <nav className="flex items-center gap-0.5 sm:gap-2" aria-label="Sections">
+        <nav className="flex items-center gap-0.5 sm:gap-1" aria-label="Sections">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-full px-2 py-1 font-mono text-[10px] tracking-wide uppercase transition-colors sm:px-3 sm:text-[11px]',
+                'px-2 py-1 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors sm:px-3',
                 active === link.href.slice(1)
-                  ? 'bg-white text-black'
-                  : 'text-white/70 hover:text-white',
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
               {link.label}
             </a>
           ))}
         </nav>
+        <p className="hidden font-mono text-[10px] tracking-[0.22em] text-muted-foreground uppercase sm:block">
+          Austin
+        </p>
       </div>
     </header>
   )

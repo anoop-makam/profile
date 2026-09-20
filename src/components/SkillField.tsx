@@ -5,15 +5,15 @@ import { fontSizeFor, labelLines, layoutBodies, stepBodies, type Body } from '@/
 import { Button } from '@/components/ui/button'
 
 const categoryColor: Record<CategoryId, string> = {
-  cloud: '#7dd3fc',
-  lang: '#c8f542',
-  arch: '#fbbf24',
-  data: '#34d399',
-  devops: '#fb923c',
-  obs: '#e879f9',
-  frontend: '#a78bfa',
-  tools: '#67e8f9',
-  method: '#fda4af',
+  cloud: '#4d655c',
+  lang: '#556348',
+  arch: '#635c48',
+  data: '#3f5a52',
+  devops: '#5a5646',
+  obs: '#4a5758',
+  frontend: '#475058',
+  tools: '#3f5554',
+  method: '#545044',
 }
 
 const LINE_CAP = 56
@@ -256,13 +256,14 @@ export function SkillField() {
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 lg:grid lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.4fr)] lg:gap-10">
         <div className="relative z-10 flex max-w-md flex-col justify-between gap-4 lg:gap-8">
           <div>
-            <p className="font-mono text-[11px] tracking-[0.22em] text-primary uppercase">
-              {profileKicker}
-            </p>
-            <h1 className="mt-2 text-[clamp(3rem,12vw,7.5rem)] leading-[0.82] tracking-[-0.07em] sm:mt-3">
+            <p className="stealth-kicker">{profileKicker}</p>
+            <h1 className="mt-3 text-[clamp(2.4rem,8vw,5.2rem)] leading-[0.9] tracking-[0.08em] text-foreground/90">
               Anoop
             </h1>
-            <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:block sm:text-base">
+            <p className="mt-1 font-mono text-[11px] tracking-[0.28em] text-muted-foreground uppercase">
+              Makam
+            </p>
+            <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:block sm:text-[15px]">
               Software engineer at General Motors in Austin. MS in AI at UT Austin.
               Click an orb for what I used it for.
             </p>
@@ -299,11 +300,11 @@ export function SkillField() {
 
         <div
           ref={fieldRef}
-          className="relative min-h-[48vh] flex-1 touch-none overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07080d]/70 sm:min-h-[34rem] sm:rounded-[2rem] lg:min-h-[calc(100svh-8rem)]"
+          className="stealth-panel relative min-h-[48vh] flex-1 touch-none overflow-hidden sm:min-h-[34rem] lg:min-h-[calc(100svh-8rem)]"
         >
           {!ready ? (
-            <p className="absolute inset-0 flex items-center justify-center font-mono text-xs text-muted-foreground">
-              Seeding the field…
+            <p className="absolute inset-0 flex items-center justify-center font-mono text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+              Acquiring…
             </p>
           ) : null}
           <svg
@@ -314,7 +315,7 @@ export function SkillField() {
             {Array.from({ length: pairCount }, (_, index) => (
               <line
                 key={index}
-                stroke="rgba(255,255,255,0.55)"
+                stroke="rgba(120,150,128,0.35)"
                 strokeWidth="1"
                 opacity="0"
               />
@@ -330,14 +331,14 @@ export function SkillField() {
               aria-pressed={selected === skill.id}
               aria-label={`${skill.label}. ${skill.blurb}`}
               className={cn(
-                'absolute top-0 left-0 box-border flex cursor-pointer items-center justify-center overflow-hidden rounded-full border font-mono font-medium tracking-normal text-[#07080d] select-none will-change-transform active:cursor-grabbing',
-                'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080d]',
+                'absolute top-0 left-0 box-border flex cursor-pointer items-center justify-center overflow-hidden rounded-full border font-mono font-medium tracking-normal text-[#c4cfc0] select-none will-change-transform active:cursor-grabbing',
+                'focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#070908]',
                 !ready && 'invisible',
               )}
               style={{
-                background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), transparent 42%), ${categoryColor[skill.category]}`,
-                boxShadow: `0 0 22px ${categoryColor[skill.category]}55`,
-                borderColor: 'rgba(255,255,255,0.28)',
+                background: `radial-gradient(circle at 30% 26%, rgba(170,190,170,0.08), transparent 48%), #0c100e`,
+                boxShadow: selected === skill.id ? `0 0 0 1px ${categoryColor[skill.category]}` : 'none',
+                borderColor: categoryColor[skill.category],
                 lineHeight: 1.1,
               }}
               onPointerDown={() => {
@@ -366,7 +367,7 @@ export function SkillField() {
               ref={tipRef}
               role="dialog"
               aria-label={`${selectedSkill.label} — what I used it for`}
-              className="absolute top-0 left-0 z-30 w-[min(18rem,calc(100%-1rem))] rounded-xl border border-white/15 bg-[#101218]/95 p-3 text-left shadow-xl backdrop-blur-md"
+              className="absolute top-0 left-0 z-30 w-[min(18rem,calc(100%-1rem))] border border-primary/25 bg-[#0a0d0b]/95 p-3 text-left backdrop-blur-sm"
               style={{ opacity: 0 }}
               onPointerDown={(event) => {
                 event.stopPropagation()
@@ -375,10 +376,10 @@ export function SkillField() {
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="font-mono text-[10px] tracking-wide text-primary uppercase">
+                  <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
                     {selectedSkill.when}
                   </p>
-                  <h2 className="mt-0.5 text-lg leading-tight tracking-tight">
+                  <h2 className="mt-0.5 text-lg leading-tight tracking-[0.06em]">
                     {selectedSkill.label}
                   </h2>
                 </div>
@@ -399,8 +400,8 @@ export function SkillField() {
           ) : null}
         </div>
       </div>
-      <p className="mt-4 hidden text-center font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase sm:mt-6 sm:block">
-        Scroll for work
+      <p className="mt-4 hidden text-center font-mono text-[10px] tracking-[0.32em] text-muted-foreground uppercase sm:mt-6 sm:block">
+        Work below
       </p>
     </section>
   )
@@ -426,17 +427,21 @@ function FilterChip({
       variant={active ? 'default' : 'outline'}
       onClick={onClick}
       aria-pressed={active}
-      className="h-7 rounded-full border-white/15 px-2.5 text-[11px] sm:h-8"
+      className="h-7 rounded-none border-primary/20 px-2.5 font-mono text-[10px] tracking-[0.14em] uppercase sm:h-8"
       style={
-        active && color
-          ? { background: color, color: '#07080d', borderColor: color }
+        active
+          ? {
+              background: color ?? 'oklch(0.28 0.03 145)',
+              color: '#d5ddd0',
+              borderColor: color ?? 'oklch(0.5 0.05 145)',
+            }
           : undefined
       }
     >
       {color ? (
         <span
-          className="size-1.5 rounded-full"
-          style={{ background: active ? '#07080d' : color }}
+          className="size-1.5 rounded-none"
+          style={{ background: color }}
         />
       ) : null}
       {children}

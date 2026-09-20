@@ -8,6 +8,8 @@ export default function App() {
   return (
     <div className="relative">
       <div className="grain" aria-hidden="true" />
+      <div className="scanlines" aria-hidden="true" />
+      <div className="vignette" aria-hidden="true" />
       <SiteHeader />
       <main>
         <SkillField />
