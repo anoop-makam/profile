@@ -5,9 +5,8 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Root URLs for BrowserRouter (`/journey`, `/connect`). GitHub Pages
-  // copies index.html to 404.html so those routes still resolve.
-  base: '/',
+  // Project Pages URL is https://anoop-makam.github.io/profile/
+  base: '/profile/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
