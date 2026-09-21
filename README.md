@@ -1,6 +1,10 @@
 # Anoop Makam
 
-A single-route React portfolio. The first section is a physics field of career skills you can drag, click, and filter. Scroll for work, path, and contact.
+An interactive engineering atlas. Three routes:
+
+- `/` — skills constellation (how technologies relate, and how they were used)
+- `/journey` — career and education path
+- `/connect` — LinkedIn and email
 
 ## Run locally
 
@@ -16,11 +20,13 @@ npm run build
 npm run preview
 ```
 
+Keyboard: `1` Skills, `2` Journey, `3` Connect, `Cmd/Ctrl + K` command palette, `Escape` closes overlays.
+
 ## GitHub Pages
 
-A GitHub Actions workflow builds `dist/` on every push to `main` and publishes it. In the repo: **Settings → Pages → Source: GitHub Actions**.
+A GitHub Actions workflow builds `dist/` on every push to `main` and publishes it. In the repo: **Settings → Pages → Source: GitHub Actions**. Client routes fall back through `404.html`.
 
-For `anoopmakam.com`, add the domain in Pages settings, then point DNS at GitHub’s A / AAAA records. Do not reverse-proxy the site — Pages already serves custom domains. Details are in git history if you need the record table; the short version:
+For `anoopmakam.com`, add the domain in Pages settings, then point DNS at GitHub’s A / AAAA records:
 
 - A `@` → `185.199.108.153` `185.199.109.153` `185.199.110.153` `185.199.111.153`
 - AAAA `@` → `2606:50c0:8000::153` `2606:50c0:8001::153` `2606:50c0:8002::153` `2606:50c0:8003::153`

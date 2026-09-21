@@ -5,9 +5,9 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Relative asset URLs work both locally and on GitHub project Pages
-  // (https://<user>.github.io/<repo>/).
-  base: './',
+  // Root URLs for BrowserRouter (`/journey`, `/connect`). GitHub Pages
+  // copies index.html to 404.html so those routes still resolve.
+  base: '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
