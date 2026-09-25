@@ -159,13 +159,13 @@ function SkillNode({
       onBlur={() => onHover(null)}
       onClick={() => onSelect(selected ? null : skill.id)}
     >
-      <motion.span layoutId={reduce ? undefined : `skill-label-${skill.id}`} className="flex flex-col items-center px-1">
+      <span className="flex flex-col items-center px-1">
         {lines.map((line) => (
           <span key={line} className="block max-w-full truncate">
             {line}
           </span>
         ))}
-      </motion.span>
+      </span>
     </motion.button>
   )
 }

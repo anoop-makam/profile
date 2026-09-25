@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { LayoutGroup } from 'framer-motion'
 import { useSearchParams } from 'react-router-dom'
 import { SkillConstellation } from '@/components/skills/SkillConstellation'
 import { SkillDetail } from '@/components/skills/SkillDetail'
@@ -47,12 +46,10 @@ export function SkillsPage() {
       </div>
 
       {desktop ? (
-        <LayoutGroup>
-          <div className="relative grid min-h-[32rem] grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)]">
-            <SkillConstellation filter={filter} selectedId={selectedId} onSelect={select} />
-            {selected ? <SkillDetail skill={selected} onClose={() => select(null)} /> : <EmptyHint />}
-          </div>
-        </LayoutGroup>
+        <div className="relative grid min-h-[32rem] grid-cols-1 overflow-hidden min-[960px]:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)]">
+          <SkillConstellation filter={filter} selectedId={selectedId} onSelect={select} />
+          {selected ? <SkillDetail skill={selected} onClose={() => select(null)} /> : <EmptyHint />}
+        </div>
       ) : (
         <SkillMobileList
           filter={filter}
@@ -67,7 +64,7 @@ export function SkillsPage() {
 
 function EmptyHint() {
   return (
-    <div className="hidden items-center border-l border-border px-6 text-sm text-muted-foreground lg:flex">
+    <div className="hidden items-center border-l border-border px-6 text-sm text-muted-foreground min-[960px]:flex">
       Select a skill to see where it showed up.
     </div>
   )

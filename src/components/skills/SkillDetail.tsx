@@ -58,9 +58,7 @@ export function SkillDetail({
               {skill.contexts[0] ? ` / ${skill.contexts[0].organization}` : ''}
             </p>
             <h2 id={titleId} className="mt-2 text-3xl tracking-tight sm:text-4xl">
-              <motion.span layoutId={reduce ? undefined : `skill-label-${skill.id}`} className="inline-block">
-                {skill.name}
-              </motion.span>
+              {skill.name}
             </h2>
           </div>
           <Button ref={closeRef} type="button" size="icon-sm" variant="ghost" onClick={onClose} aria-label="Close skill">
