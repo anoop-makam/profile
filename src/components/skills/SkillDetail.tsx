@@ -1,10 +1,8 @@
 import { useEffect, useId, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { categories, getSkill } from '@/data/skills'
-import { useReducedMotion } from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/utils'
 import type { Skill } from '@/types'
 
@@ -17,7 +15,6 @@ export function SkillDetail({
   onClose: () => void
   embedded?: boolean
 }) {
-  const reduce = useReducedMotion()
   const closeRef = useRef<HTMLButtonElement>(null)
   const titleId = useId()
   const category = categories.find((item) => item.id === skill.category)?.label ?? skill.category
@@ -36,37 +33,31 @@ export function SkillDetail({
   }, [onClose])
 
   return (
-    <AnimatePresence>
-      <motion.aside
-        key={skill.id}
-        role={embedded ? 'region' : 'dialog'}
-        aria-modal={embedded ? undefined : true}
-        aria-labelledby={titleId}
-        initial={reduce ? false : { opacity: 0, x: 24 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={reduce ? undefined : { opacity: 0, x: 16 }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className={cn(
-          'flex h-full flex-col bg-surface/95 p-5 backdrop-blur-md sm:p-6',
-          embedded ? 'border-0' : 'border-l border-border',
-        )}
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="mono-kicker">
-              {category}
-              {skill.contexts[0] ? ` / ${skill.contexts[0].organization}` : ''}
-            </p>
-            <h2 id={titleId} className="mt-2 text-3xl tracking-tight sm:text-4xl">
-              {skill.name}
-            </h2>
-          </div>
-          <Button ref={closeRef} type="button" size="icon-sm" variant="ghost" onClick={onClose} aria-label="Close skill">
-            <X />
-          </Button>
+    <aside
+      role={embedded ? 'region' : 'dialog'}
+      aria-modal={embedded ? undefined : true}
+      aria-labelledby={titleId}
+      className={cn(
+        'flex h-full flex-col bg-surface/95 p-5 sm:p-6',
+        embedded ? 'border-0' : 'border-l border-border',
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="mono-kicker">
+            {category}
+            {skill.contexts[0] ? ` / ${skill.contexts[0].organization}` : ''}
+          </p>
+          <h2 id={titleId} className="mt-2 text-3xl tracking-tight sm:text-4xl">
+            {skill.name}
+          </h2>
         </div>
+        <Button ref={closeRef} type="button" size="icon-sm" variant="ghost" onClick={onClose} aria-label="Close skill">
+          <X />
+        </Button>
+      </div>
 
-        <div className="mt-8 space-y-8 overflow-y-auto pr-1">
+      <div className="mt-8 space-y-8 overflow-y-auto pr-1">
           <section>
             <h3 className="mono-kicker">How I used it</h3>
             <ul className="mt-3 space-y-4">
@@ -110,7 +101,6 @@ export function SkillDetail({
             </ul>
           </section>
         </div>
-      </motion.aside>
-    </AnimatePresence>
+    </aside>
   )
 }

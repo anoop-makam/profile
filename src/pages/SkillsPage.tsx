@@ -48,7 +48,9 @@ export function SkillsPage() {
       {desktop ? (
         <div className="relative grid min-h-[32rem] grid-cols-1 overflow-hidden min-[960px]:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)]">
           <SkillConstellation filter={filter} selectedId={selectedId} onSelect={select} />
-          {selected ? <SkillDetail skill={selected} onClose={() => select(null)} /> : <EmptyHint />}
+          <div className="min-h-0 min-w-0">
+            {selected ? <SkillDetail skill={selected} onClose={() => select(null)} /> : <EmptyHint />}
+          </div>
         </div>
       ) : (
         <SkillMobileList
