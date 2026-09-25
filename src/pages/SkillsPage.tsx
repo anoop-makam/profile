@@ -38,11 +38,19 @@ export function SkillsPage() {
 
   const selected = selectedId ? getSkill(selectedId) : undefined
 
+  const applyFilter = useCallback(
+    (next: Filter) => {
+      setFilter(next)
+      if (next !== filter && selectedId) select(null)
+    },
+    [filter, select, selectedId],
+  )
+
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <SkillHero />
-        <SkillFilters value={filter} onChange={setFilter} />
+        <SkillFilters value={filter} onChange={applyFilter} />
       </div>
 
       {desktop ? (

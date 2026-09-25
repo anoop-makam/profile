@@ -32,6 +32,10 @@ export function SkillConstellation({
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    setHovered(null)
+  }, [filter])
+
   const layouts = useMemo(
     () => layoutConstellation(skills, size.width, size.height, filter),
     [size.width, size.height, filter],
