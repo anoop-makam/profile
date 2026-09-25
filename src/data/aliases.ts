@@ -7,6 +7,19 @@ export const skillAliases: Record<string, string> = {
   'github-actions': 'gha',
   actions: 'gha',
   'open-telemetry': 'otel',
+  'synthetic-monitors': 'synthetics',
+  synthetics: 'synthetics',
+  slos: 'slo',
+  'service-level-objectives': 'slo',
+  'webhook-alerts': 'webhooks',
+  'on-call': 'oncall',
+  pagerduty: 'pagerduty',
+  'hugging-face': 'huggingface',
+  huggingface: 'huggingface',
+  'deep-learning': 'deeplearning',
+  'natural-language-processing': 'nlp',
+  'neural-networks': 'neuralnets',
+  'machine-learning': 'ml',
 }
 
 export function resolveSkillId(raw: string | null | undefined): string | null {

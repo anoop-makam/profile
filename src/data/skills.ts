@@ -225,7 +225,7 @@ export const skills: Skill[] = [
         description: 'Python in the toolbox for scripting and AI coursework at UT Austin.',
       },
     ],
-    relatedSkills: [],
+    relatedSkills: ['pytorch', 'huggingface', 'numpy', 'ml'],
   },
   {
     id: 'java',
@@ -525,7 +525,7 @@ export const skills: Skill[] = [
           'Traces, logs, and metrics into Datadog. Synthetic monitors, RUM, and SLO alerts into Slack and ServiceNow.',
       },
     ],
-    relatedSkills: ['otel', 'grafana', 'microservices', 'angular'],
+    relatedSkills: ['otel', 'grafana', 'synthetics', 'slo', 'webhooks', 'microservices', 'angular'],
   },
   {
     id: 'otel',
@@ -567,6 +567,188 @@ export const skills: Skill[] = [
       },
     ],
     relatedSkills: ['datadog', 'kibana', 'otel'],
+  },
+  {
+    id: 'synthetics',
+    name: 'Synthetic Monitors',
+    category: 'observability',
+    weight: 1.1,
+    contexts: [
+      {
+        organization: 'General Motors',
+        role: 'Software engineer',
+        year: '2022 — Present',
+        description:
+          'Synthetic monitors in Datadog for the customer and dealer apps, alongside RUM.',
+      },
+    ],
+    relatedSkills: ['datadog', 'slo', 'webhooks', 'otel'],
+  },
+  {
+    id: 'slo',
+    name: 'SLOs',
+    category: 'observability',
+    weight: 1.1,
+    contexts: [
+      {
+        organization: 'General Motors',
+        role: 'Software engineer',
+        year: '2022 — Present',
+        description: 'Service level objectives, with SLO alerts into Slack and ServiceNow.',
+      },
+    ],
+    relatedSkills: ['datadog', 'synthetics', 'webhooks', 'oncall'],
+  },
+  {
+    id: 'webhooks',
+    name: 'Webhook Alerts',
+    category: 'observability',
+    weight: 0.95,
+    contexts: [
+      {
+        organization: 'General Motors',
+        role: 'Software engineer',
+        year: '2022 — Present',
+        description: 'Webhook alerts from the observability stack into Slack and ServiceNow.',
+      },
+    ],
+    relatedSkills: ['datadog', 'slo', 'pagerduty', 'oncall'],
+  },
+  {
+    id: 'oncall',
+    name: 'On-call',
+    category: 'observability',
+    weight: 1.05,
+    contexts: [
+      {
+        organization: 'General Motors',
+        role: 'Software engineer',
+        year: '2022 — Present',
+        description: 'On-call for P1s on the customer and dealer-facing services.',
+      },
+    ],
+    relatedSkills: ['pagerduty', 'slo', 'datadog', 'jira'],
+  },
+  {
+    id: 'pagerduty',
+    name: 'PagerDuty',
+    category: 'observability',
+    weight: 0.95,
+    contexts: [
+      {
+        organization: 'General Motors',
+        role: 'Software engineer',
+        year: '2022 — Present',
+        description: 'PagerDuty for on-call at GM.',
+      },
+    ],
+    relatedSkills: ['oncall', 'webhooks', 'slo', 'datadog'],
+  },
+  {
+    id: 'pytorch',
+    name: 'PyTorch',
+    category: 'ai',
+    weight: 1.15,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'PyTorch for deep learning coursework in the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['python', 'numpy', 'deeplearning', 'neuralnets', 'huggingface'],
+  },
+  {
+    id: 'huggingface',
+    name: 'Hugging Face',
+    category: 'ai',
+    weight: 1.05,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'Hugging Face for NLP work in the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['pytorch', 'nlp', 'python', 'deeplearning'],
+  },
+  {
+    id: 'numpy',
+    name: 'NumPy',
+    category: 'ai',
+    weight: 0.95,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'NumPy for numerical work in the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['python', 'pytorch', 'ml'],
+  },
+  {
+    id: 'deeplearning',
+    name: 'Deep Learning',
+    category: 'ai',
+    weight: 1.15,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'Deep learning as part of the MS in Artificial Intelligence at UT Austin.',
+      },
+    ],
+    relatedSkills: ['pytorch', 'neuralnets', 'ml', 'huggingface'],
+  },
+  {
+    id: 'nlp',
+    name: 'NLP',
+    category: 'ai',
+    weight: 1.1,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description:
+          'Natural language processing coursework in the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['huggingface', 'pytorch', 'deeplearning', 'ml'],
+  },
+  {
+    id: 'neuralnets',
+    name: 'Neural Networks',
+    category: 'ai',
+    weight: 1.05,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'Neural networks as part of the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['deeplearning', 'pytorch', 'ml'],
+  },
+  {
+    id: 'ml',
+    name: 'Machine Learning',
+    category: 'ai',
+    weight: 1.15,
+    contexts: [
+      {
+        organization: 'UT Austin',
+        role: 'M.S. Artificial Intelligence',
+        year: '2025 — Present',
+        description: 'Machine learning coursework in the MS at UT Austin.',
+      },
+    ],
+    relatedSkills: ['python', 'numpy', 'deeplearning', 'nlp'],
   },
   {
     id: 'angular',
